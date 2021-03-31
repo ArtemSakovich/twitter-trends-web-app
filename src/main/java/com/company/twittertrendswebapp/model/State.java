@@ -60,4 +60,9 @@ public class State extends AEntity{
     public String toString() {
         return stateName + " " + getStateWeight();
     }
+
+    public void clearData() {
+        amountOfTweets = 1;
+        stateWeight = 0.0;
+    }
 }

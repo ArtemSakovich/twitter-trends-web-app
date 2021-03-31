@@ -20,8 +20,7 @@ public class VocabularyService implements IVocabularyService {
     @Override
     @PostConstruct
     public void init() throws AppException {
-        System.out.println("VocabularyService");
-        String fileName = "sentiments.csv";
+        String fileName = "src/main/resources/sentiments.csv";
         vocabulary = new Vocabulary();
         Map<String, Float> tempStorage = new TreeMap<>();
         try (CSVReader reader = new CSVReader(new FileReader(fileName))) {

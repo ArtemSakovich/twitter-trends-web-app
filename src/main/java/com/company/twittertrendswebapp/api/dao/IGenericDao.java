@@ -12,4 +12,6 @@ public interface IGenericDao <T extends AEntity>{
     void save(T entity);
 
     Long getMaxId();
+
+    void clearData();
 }

@@ -9,25 +9,16 @@ import com.company.twittertrendswebapp.model.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.logging.Logger;
-
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.POSITIVE_INFINITY;
+
 @Component
 public class TweetLocationDeterminant implements ITweetLocationDeterminant {
     @Autowired
     private IStateDao stateDao;
     @Autowired
     private ITweetDao tweetDao;
-    private Integer amount = 0;
-
-    @PostConstruct
-    void init() {
-        System.out.println("location deter");
-        determineTweetLocation();
-    }
 
     public void determineTweetLocation() {
         List<State> states = stateDao.getAll();
@@ -98,7 +89,6 @@ public class TweetLocationDeterminant implements ITweetLocationDeterminant {
                     if (number_crossings % 2 != 0) {
                         flag = true;
                         tweet.setState(state);
-                        amount++;
                         state.setStateWeight(tweet.getTweetWeight());
                         state.addAmountOfTweets();
                     }
@@ -111,7 +101,11 @@ public class TweetLocationDeterminant implements ITweetLocationDeterminant {
                 }
             }
         }
-        System.out.println(amount);
+    }
+
+    @Override
+    public void clearData() {
+        stateDao.getAll().forEach(State::clearData);
     }
 }
 

@@ -8,10 +8,7 @@ import com.company.twittertrendswebapp.model.Vocabulary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.logging.Logger;
-
 @Component
 public class TweetAnalyzer implements ITweetAnalyzer {
     private static final char SPACE_CHAR = ' ';
@@ -19,12 +16,6 @@ public class TweetAnalyzer implements ITweetAnalyzer {
     private ITweetDao tweetDao;
     @Autowired
     private IVocabularyService vocabularyService;
-
-    @PostConstruct
-    void init() {
-        System.out.println("tweet analyzer");
-        analyzeTwits(tweetDao.getAll());
-    }
 
     private String normalizeBody(String body) {
         StringBuilder result = new StringBuilder();
@@ -44,8 +35,7 @@ public class TweetAnalyzer implements ITweetAnalyzer {
     }
 
     private int analyzeSentimentAndReturnFoundedSentimentLength(String body, Vocabulary vocabulary,
-                                                                       IVocabularyService vocabularyService, int pos,
-                                                                       int endPos, Tweet tweet) {
+                          IVocabularyService vocabularyService, int pos, int endPos, Tweet tweet) {
         int sentimentLength = 0;
         String sentiment = body.substring(pos, endPos).trim();
         while (sentiment.length() >= vocabulary.getMinSentimentLength()) {

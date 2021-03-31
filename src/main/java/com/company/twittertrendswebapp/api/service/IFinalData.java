@@ -6,5 +6,5 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface IFinalData {
-    List<State> getFinalData() throws FileNotFoundException;
+    List<State> getFinalData(String tweetsFileName) throws FileNotFoundException;
 }

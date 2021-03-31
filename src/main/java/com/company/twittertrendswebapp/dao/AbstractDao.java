@@ -39,4 +39,9 @@ public class AbstractDao<T extends AEntity> implements IGenericDao<T> {
             return 0L;
         }
     }
+
+    @Override
+    public void clearData() {
+        repository.clear();
+    }
 }

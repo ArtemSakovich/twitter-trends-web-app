@@ -2,14 +2,13 @@ package com.company.twittertrendswebapp.service;
 
 import com.company.twittertrendswebapp.api.dao.IStateDao;
 import com.company.twittertrendswebapp.api.service.IStateParser;
-import com.company.twittertrendswebapp.dao.StateDao;
+import com.company.twittertrendswebapp.api.service.ITweetAnalyzer;
 import com.company.twittertrendswebapp.model.Polygon;
 import com.company.twittertrendswebapp.model.State;
 import com.company.twittertrendswebapp.model.Top;
 import com.company.twittertrendswebapp.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,8 +23,7 @@ public class StateParser implements IStateParser {
 
     @PostConstruct
     void init() throws IOException {
-        System.out.println("StateParser");
-        ParseJSONFile("states.json");
+        ParseJSONFile("src/main/resources/states.json");
     }
 
     private void ParseJSONFile(String fileName) throws IOException {
@@ -90,7 +88,7 @@ public class StateParser implements IStateParser {
 
                     i++;
                 }
-                t.setX(Double.valueOf(point)) ;
+                t.setX(Double.parseDouble(point)) ;
                 point = "";
                 if (temp.charAt(i+1) == ',')
                 {
@@ -104,8 +102,7 @@ public class StateParser implements IStateParser {
                     }
 
                 }
-                t.setY(Double.valueOf(point));
-                //t.getY() = Double.valueOf(point);
+                t.setY(Double.parseDouble(point));
             }
         }
         return t;
@@ -113,18 +110,16 @@ public class StateParser implements IStateParser {
 
     private String DeleteAnotherBrackets(String jsonString) {
         int temp = 0;
-
-        //ArrayList<Character> chars=new ArrayList<Character>();
-        //for(char c : jsonstring.toCharArray()){chars.add(c);}
-
         for (int i = 0; i < jsonString.length() - temp - 5; i++)
         {
-            if ((jsonString.charAt(i) == '[' && jsonString.charAt(i+1) == '[' && jsonString.charAt(i+2) == '[') && jsonString.charAt(i-2) != ':')
+            if ((jsonString.charAt(i) == '[' && jsonString.charAt(i+1) == '[' && jsonString.charAt(i+2) == '[') &&
+                    jsonString.charAt(i-2) != ':')
             {
                 jsonString=jsonString.substring(0,i)+jsonString.substring(i+1);
                 temp++;
             }
-            if ((jsonString.charAt(i) == ']' && jsonString.charAt(i+1) == ']' && jsonString.charAt(i+2) == ']') && jsonString.charAt(i+5) != '"')
+            if ((jsonString.charAt(i) == ']' && jsonString.charAt(i+1) == ']' && jsonString.charAt(i+2) == ']') &&
+                    jsonString.charAt(i+5) != '"')
             {
                 jsonString=jsonString.substring(0,i)+jsonString.substring(i+1);
                 temp++;
@@ -137,13 +132,12 @@ public class StateParser implements IStateParser {
     private String DeleteUselessBrackets(String jsonString) {
         int temp = 0;
 
-        //ArrayList<Character> chars=new ArrayList<Character>();
-        //for(char c : jsonstring.toCharArray()){chars.add(c);}
-
         for (int i = 0; i < jsonString.length() - temp; i++)
         {
-            if ((jsonString.charAt(i) == '[' && jsonString.charAt(i+1) == '[' && jsonString.charAt(i+2) == '[' && jsonString.charAt(i+3) == '[')
-                    || (jsonString.charAt(i) == ']' && jsonString.charAt(i+1) == ']' && jsonString.charAt(i+2) == ']' && jsonString.charAt(i+3) == ']'))
+            if ((jsonString.charAt(i) == '[' && jsonString.charAt(i+1) == '[' && jsonString.charAt(i+2) == '[' &&
+                    jsonString.charAt(i+3) == '[')
+                    || (jsonString.charAt(i) == ']' && jsonString.charAt(i+1) == ']' && jsonString.charAt(i+2) == ']'
+                    && jsonString.charAt(i+3) == ']'))
             {
                 jsonString=jsonString.substring(0,i)+jsonString.substring(i+1);
                 temp++;
